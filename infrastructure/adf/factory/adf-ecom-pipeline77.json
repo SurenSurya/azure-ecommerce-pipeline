@@ -1,0 +1,15 @@
+{
+	"name": "adf-ecom-pipeline77",
+	"properties": {
+		"trustModeClaimForMi": {
+			"value": "Enabled",
+			"editable": true
+		}
+	},
+	"location": "eastus",
+	"identity": {
+		"type": "SystemAssigned",
+		"principalId": "ada6094a-2ea5-41ec-9117-7275536c972a",
+		"tenantId": "af67c4ea-a418-4225-b287-7f58313a8b98"
+	}
+}
