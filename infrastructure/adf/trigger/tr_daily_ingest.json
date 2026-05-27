@@ -1,0 +1,26 @@
+{
+	"name": "tr_daily_ingest",
+	"properties": {
+		"annotations": [],
+		"runtimeState": "Stopped",
+		"pipelines": [],
+		"type": "ScheduleTrigger",
+		"typeProperties": {
+			"recurrence": {
+				"frequency": "Day",
+				"interval": 1,
+				"startTime": "2026-05-27T18:19:00",
+				"endTime": "2026-06-04T18:19:00",
+				"timeZone": "India Standard Time",
+				"schedule": {
+					"minutes": [
+						19
+					],
+					"hours": [
+						18
+					]
+				}
+			}
+		}
+	}
+}
