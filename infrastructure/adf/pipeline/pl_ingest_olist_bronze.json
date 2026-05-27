@@ -1,0 +1,95 @@
+{
+	"name": "pl_ingest_olist_bronze",
+	"properties": {
+		"activities": [
+			{
+				"name": "ForEach1",
+				"type": "ForEach",
+				"dependsOn": [],
+				"userProperties": [],
+				"typeProperties": {
+					"items": {
+						"value": "[\"olist_orders_dataset.csv\",\n \"olist_order_items_dataset.csv\",\n \"olist_customers_dataset.csv\",\n \"olist_products_dataset.csv\",\n \"olist_sellers_dataset.csv\",\n \"olist_order_payments_dataset.csv\",\n \"olist_order_reviews_dataset.csv\",\n \"olist_geolocation_dataset.csv\",\n\"product_category_name_translation.csv\"]",
+						"type": "Expression"
+					},
+					"activities": [
+						{
+							"name": "copy_csv_to_bronze",
+							"type": "Copy",
+							"dependsOn": [],
+							"policy": {
+								"timeout": "0.12:00:00",
+								"retry": 0,
+								"retryIntervalInSeconds": 30,
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"source": {
+									"type": "DelimitedTextSource",
+									"storeSettings": {
+										"type": "AzureBlobFSReadSettings",
+										"recursive": true,
+										"enablePartitionDiscovery": false
+									},
+									"formatSettings": {
+										"type": "DelimitedTextReadSettings"
+									}
+								},
+								"sink": {
+									"type": "DelimitedTextSink",
+									"storeSettings": {
+										"type": "AzureBlobFSWriteSettings"
+									},
+									"formatSettings": {
+										"type": "DelimitedTextWriteSettings",
+										"quoteAllText": true,
+										"fileExtension": ".txt"
+									}
+								},
+								"enableStaging": false,
+								"translator": {
+									"type": "TabularTranslator",
+									"typeConversion": true,
+									"typeConversionSettings": {
+										"allowDataTruncation": true,
+										"treatBooleanAsNumber": false
+									}
+								}
+							},
+							"inputs": [
+								{
+									"referenceName": "ds_bronze_csv_source",
+									"type": "DatasetReference",
+									"parameters": {
+										"filename": {
+											"value": "@item()",
+											"type": "Expression"
+										}
+									}
+								}
+							],
+							"outputs": [
+								{
+									"referenceName": "ds_bronze_csv_sink",
+									"type": "DatasetReference",
+									"parameters": {
+										"filename": "@concat(replace(item(),'.csv',''),'_',pipeline().parameters.run_date,'.csv')"
+									}
+								}
+							]
+						}
+					]
+				}
+			}
+		],
+		"parameters": {
+			"run_date": {
+				"type": "string",
+				"defaultValue": "@{formatDateTime(utcNow(),'yyyyMMdd')}"
+			}
+		},
+		"annotations": []
+	}
+}
