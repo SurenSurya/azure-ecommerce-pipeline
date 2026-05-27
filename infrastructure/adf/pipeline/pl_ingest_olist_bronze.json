@@ -9,7 +9,7 @@
 				"userProperties": [],
 				"typeProperties": {
 					"items": {
-						"value": "[\"olist_orders_dataset.csv\",\n \"olist_order_items_dataset.csv\",\n \"olist_customers_dataset.csv\",\n \"olist_products_dataset.csv\",\n \"olist_sellers_dataset.csv\",\n \"olist_order_payments_dataset.csv\",\n \"olist_order_reviews_dataset.csv\",\n \"olist_geolocation_dataset.csv\",\n\"product_category_name_translation.csv\"]",
+						"value": "@createArray(\n'olist_orders_dataset.csv',\n'olist_order_items_dataset.csv',\n'olist_customers_dataset.csv',\n'olist_products_dataset.csv',\n'olist_sellers_dataset.csv',\n'olist_order_payments_dataset.csv',\n'olist_order_reviews_dataset.csv',\n'olist_geolocation_dataset.csv',\n'product_category_name_translation.csv'\n)",
 						"type": "Expression"
 					},
 					"activities": [
