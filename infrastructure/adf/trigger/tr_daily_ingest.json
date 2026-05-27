@@ -9,12 +9,11 @@
 			"recurrence": {
 				"frequency": "Day",
 				"interval": 1,
-				"startTime": "2026-05-27T18:19:00",
-				"endTime": "2026-06-04T18:19:00",
+				"startTime": "2026-05-27T18:22:00",
 				"timeZone": "India Standard Time",
 				"schedule": {
 					"minutes": [
-						19
+						30
 					],
 					"hours": [
 						18
