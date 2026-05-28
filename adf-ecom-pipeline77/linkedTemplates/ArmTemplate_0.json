@@ -14,6 +14,10 @@
 		"AzureDataLakeStorage1_properties_typeProperties_url": {
 			"type": "string",
 			"defaultValue": "https://ecomdatalakesurya.dfs.core.windows.net/"
+		},
+		"tr_daily_ingest_properties_pl_ingest_olist_bronze_parameters_run_date": {
+			"type": "string",
+			"defaultValue": "@{formatDateTime(trigger().scheduledTime,'yyyyMMdd')}"
 		}
 	},
 	"variables": {
@@ -242,6 +246,49 @@
 								}
 							]
 						}
+					},
+					{
+						"name": "Get Metadata1",
+						"type": "GetMetadata",
+						"dependsOn": [
+							{
+								"activity": "ForEach1",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"dataset": {
+								"referenceName": "ds_bronze_csv_sink",
+								"type": "DatasetReference",
+								"parameters": {
+									"filename": {
+										"value": "@concat('olist_orders_dataset_',pipeline().parameters.run_date,'.csv')",
+										"type": "Expression"
+									}
+								}
+							},
+							"fieldList": [
+								"exists",
+								"size"
+							],
+							"storeSettings": {
+								"type": "AzureBlobFSReadSettings",
+								"enablePartitionDiscovery": false
+							},
+							"formatSettings": {
+								"type": "DelimitedTextReadSettings"
+							}
+						}
 					}
 				],
 				"policy": {
@@ -250,14 +297,54 @@
 				"parameters": {
 					"run_date": {
 						"type": "string",
-						"defaultValue": "@{formatDateTime(utcNow(),'yyyyMMdd')}"
+						"defaultValue": "@{formatDateTime(trigger().scheduledTime,'yyyyMMdd')}"
 					}
 				},
 				"annotations": []
 			},
 			"dependsOn": [
-				"[concat(variables('factoryId'), '/datasets/ds_bronze_csv_source')]",
-				"[concat(variables('factoryId'), '/datasets/ds_bronze_csv_sink')]"
+				"[concat(variables('factoryId'), '/datasets/ds_bronze_csv_sink')]",
+				"[concat(variables('factoryId'), '/datasets/ds_bronze_csv_source')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/tr_daily_ingest')]",
+			"type": "Microsoft.DataFactory/factories/triggers",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"runtimeState": "Started",
+				"pipelines": [
+					{
+						"pipelineReference": {
+							"referenceName": "pl_ingest_olist_bronze",
+							"type": "PipelineReference"
+						},
+						"parameters": {
+							"run_date": "[parameters('tr_daily_ingest_properties_pl_ingest_olist_bronze_parameters_run_date')]"
+						}
+					}
+				],
+				"type": "ScheduleTrigger",
+				"typeProperties": {
+					"recurrence": {
+						"frequency": "Day",
+						"interval": 1,
+						"startTime": "2026-05-27T18:32:00",
+						"timeZone": "India Standard Time",
+						"schedule": {
+							"minutes": [
+								0
+							],
+							"hours": [
+								2
+							]
+						}
+					}
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/pipelines/pl_ingest_olist_bronze')]"
 			]
 		}
 	]

@@ -15,6 +15,10 @@
 			"type": "string",
 			"defaultValue": "https://ecomdatalakesurya.dfs.core.windows.net/"
 		},
+		"tr_daily_ingest_properties_pl_ingest_olist_bronze_parameters_run_date": {
+			"type": "string",
+			"defaultValue": "@{formatDateTime(trigger().scheduledTime,'yyyyMMdd')}"
+		},
 		"containerUri": {
 			"type": "string",
 			"metadata": "URI to storage account containing linked ARM templates"
@@ -47,6 +51,9 @@
 					},
 					"AzureDataLakeStorage1_properties_typeProperties_url": {
 						"value": "[parameters('AzureDataLakeStorage1_properties_typeProperties_url')]"
+					},
+					"tr_daily_ingest_properties_pl_ingest_olist_bronze_parameters_run_date": {
+						"value": "[parameters('tr_daily_ingest_properties_pl_ingest_olist_bronze_parameters_run_date')]"
 					}
 				}
 			},

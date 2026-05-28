@@ -11,6 +11,9 @@
 		"AzureDataLakeStorage1_properties_typeProperties_url": {
 			"value": "https://ecomdatalakesurya.dfs.core.windows.net/"
 		},
+		"tr_daily_ingest_properties_pl_ingest_olist_bronze_parameters_run_date": {
+			"value": "@{formatDateTime(trigger().scheduledTime,'yyyyMMdd')}"
+		},
 		"containerUri": {
 			"value": ""
 		},
