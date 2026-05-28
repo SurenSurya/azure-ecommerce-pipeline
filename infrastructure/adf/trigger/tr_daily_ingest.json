@@ -8,6 +8,9 @@
 				"pipelineReference": {
 					"referenceName": "pl_ingest_olist_bronze",
 					"type": "PipelineReference"
+				},
+				"parameters": {
+					"run_date": "@{formatDateTime(trigger().scheduledTime,'yyyyMMdd')}"
 				}
 			}
 		],
