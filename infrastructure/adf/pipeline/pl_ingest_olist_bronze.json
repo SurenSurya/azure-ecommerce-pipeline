@@ -82,12 +82,55 @@
 						}
 					]
 				}
+			},
+			{
+				"name": "Get Metadata1",
+				"type": "GetMetadata",
+				"dependsOn": [
+					{
+						"activity": "ForEach1",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"dataset": {
+						"referenceName": "ds_bronze_csv_sink",
+						"type": "DatasetReference",
+						"parameters": {
+							"filename": {
+								"value": "@concat('olist_orders_dataset_',pipeline().parameters.run_date,'.csv')",
+								"type": "Expression"
+							}
+						}
+					},
+					"fieldList": [
+						"exists",
+						"size"
+					],
+					"storeSettings": {
+						"type": "AzureBlobFSReadSettings",
+						"enablePartitionDiscovery": false
+					},
+					"formatSettings": {
+						"type": "DelimitedTextReadSettings"
+					}
+				}
 			}
 		],
 		"parameters": {
 			"run_date": {
 				"type": "string",
-				"defaultValue": "@{formatDateTime(utcNow(),'yyyyMMdd')}"
+				"defaultValue": "@{formatDateTime(trigger().scheduledTime,'yyyyMMdd')}"
 			}
 		},
 		"annotations": []
