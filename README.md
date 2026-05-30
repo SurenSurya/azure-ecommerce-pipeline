@@ -120,10 +120,3 @@ Forecast future revenue trends using historical sales data.
 - ML Forecast Insights
 
 ---
-
-## 🔧 Setup Instructions
-
-### 1. Clone repository
-```bash
-git clone https://github.com/your-username/azure-ecommerce-pipeline.git
-cd azure-ecommerce-pipeline
